@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<link rel="stylesheet" type="text/css" href="./../static/css/bootstrap.min.css">
+		<title>SMS-ishing</title>
+	</head>
+	<style type="text/css">
+		body{
+			box-sizing: border-box;
+			padding: 0;
+			margin: 0;
+		}
+		.title{
+			text-align: center;
+		}
+		.info p{
+			font-size: 1.3rem;
+		}
+	</style>
+	<body>
+		<div class="container">
+			<h1 class="alert alert-info title">SMS-ishing</h1>
+
+			<caption class="info">
+				<p>This project is a sample demonstration of SMS + Phishing = SMS-ishing</p>
+
+				<h5>0-SAFE</h5>
+				<h5>1-SUSPICIOUS</h5>
+				<h5>2-UNSAFE</h5>
+			</caption>
+			<hr/>
+			<div>
+				<form method="POST" action="/submit">
+					<div class="form-group">
+						<label for="msg">Enter message to test</label>
+						<textarea placeholder="Enter your message here...." class="form-control" id="msg" name="msg" rows="3"></textarea>
+					</div>
+					<button type="submit" class="btn btn-info">Submit</button>
+				</form>
+			</div>
+		</div>
+
+		<script type="text/javascript" src="./../static/js/jquery-3.4.1.slim.min.js"></script>
+		<script type="text/javascript" src="./../static/js/popper.min.js"></script>
+		<script type="text/javascript" src="./../static/js/bootstrap.min.js"></script>
+	</body>
+</html>

@@ -1,0 +1,6 @@
+safebrowsing,token_count,avg_path_token,largest_path,largest_token,URL,sec_sen_word_cnt,IPaddress_presence,largest_domain,No_of_dots,host,Length_of_url,ASNno,rank_country,rank_host,path_token_count,domain_token_count,path,avg_token_length,avg_domain_token_length,Length_of_host
+-1,4,0,0,7,https://www.twitter.com,0,0,7,2,www.twitter.com,23,-1,28,47,0,3,,4.5,4.333333333333333,15
+-1,7,0,0,9,https://www.shreeji-bill-maker.herokuapp.com,0,0,9,3,www.shreeji-bill-maker.herokuapp.com,44,-1,-1,-1,0,6,,5.142857142857143,5.166666666666667,36
+-1,5,5.5,10,10,https://gfdk.in/s/gRK007LUpZ,0,0,4,1,gfdk.in,28,-1,-1,7566212,2,2,/s/gRK007LUpZ,4.4,3.0,7
+-1,4,0,0,6,https://www.google.com,0,0,6,2,www.google.com,22,15169,1,1,0,3,,4.25,4.0,14
+-1,9,5.333333333333333,12,12,https://getbootstrap.com/docs/4.4/getting-started/introduction/,0,0,12,2,getbootstrap.com,63,-1,610,2397,6,2,/docs/4.4/getting-started/introduction/,5.777777777777778,7.5,16

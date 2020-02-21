@@ -1,0 +1,7 @@
+.idea/
+.ipynb_checkpoints/
+.vscode/
+venv/
+Feature_extraction.pyc
+main.pyc
+trainer.pyc
