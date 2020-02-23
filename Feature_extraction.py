@@ -5,6 +5,7 @@ import urllib
 from xml.dom import minidom
 import csv
 import pygeoip
+import sys
 
 opener = urllib2.build_opener()
 opener.addheaders = [('User-agent', 'Mozilla/5.0')]
@@ -175,7 +176,7 @@ def feature_extract(url_input):
         Feature={}
         tokens_words=re.split('\W+',url_input)       #Extract bag of words stings delimited by (.,/,?,,=,-,_)
         print tokens_words,len(tokens_words)
-
+        print(url_input)
         #token_delimit1=re.split('[./?=-_]',url_input)
         #print token_delimit1,len(token_delimit1)
 
@@ -215,3 +216,8 @@ def feature_extract(url_input):
         # for key in Feature:
         #     print key +':'+str(Feature[key])
         return Feature
+
+if __name__=="__main__":
+    url=sys.argv[1]
+    x=feature_extract(url)
+    print(x)

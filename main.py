@@ -36,16 +36,6 @@ def process_test_list(file_dest,output_dest):
                 feature.append([url,ret_dict])
     resultwriter(feature,output_dest)
 
-#change
-def process_test_url(url,output_dest):
-    feature=[]
-    url=url.strip()
-    if url!='':
-        print 'working on: '+url           #showoff 
-        ret_dict=urlfeature.feature_extract(url)
-        feature.append([url,ret_dict]);
-    resultwriter(feature,output_dest)
-
 
 def main():
         '''

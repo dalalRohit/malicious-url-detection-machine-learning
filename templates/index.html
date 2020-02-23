@@ -32,6 +32,25 @@
 			</caption>
 			<hr/>
 			<div>
+				<div class="alert">
+					{% if(ans) %}
+						{% if(ans==1)%}
+							<h2 class="alert alert-warning" >Website entered is SUSPICIOUS</h2>
+						{% endif%}
+						
+						{% if(ans==0)%}
+							<h2 class="alert alert-success" >Website entered is SAFE</h2>
+						{% endif%}
+
+						{% if(ans==2)%}
+							<h2 class="alert alert-danger" >Website entered is MALICIOUS</h2>
+						{% endif%}
+					{% endif %}
+
+					{% if error%}
+						<h3 class="alert alert-warning">{{error}}</h3>
+					{% endif %}
+				</div>
 				<form method="POST" action="/submit">
 					<div class="form-group">
 						<label for="msg">Enter message to test</label>

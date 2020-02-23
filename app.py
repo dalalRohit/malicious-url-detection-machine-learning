@@ -2,13 +2,17 @@ from flask import Flask,render_template,request,redirect,url_for
 import Feature_extraction as urlfeature
 import pickle
 import pandas as pd
+import re
+import numpy as np
+
+app = Flask(__name__)
+
 
 #----------------------------PICKLE--------------------
 Pkl_Filename = "my_model.pkl"
 with open(Pkl_Filename, 'rb') as file:
     rf_model = pickle.load(file)
 
-app = Flask(__name__)
 
 # ----------------------------HELPER FUNCTIONS-----------------
 train_cols=['token_count',
@@ -40,31 +44,46 @@ def get_nonstring_cols(data_cols):
 				train_cols.append(col)
 	return [cols_to_keep,train_cols]
 
+def get_link_from_text(sms):
+	url = re.findall('http[s]?://(?:[a-zA-Z]|[0-9]|[$-_@.&+] |[!*\(\), ]|(?:%[0-9a-fA-F][0-9a-fA-F]))+', sms) 
+	return url 
 
 # -----------------------FLASK ROUTES------------------------
 
 #GET /
 @app.route('/')
-def hello_world():
-    return render_template('index.html')
+def main():
+	if(request.args):
+		ans=request.args.get('ans')
+		error=request.args.get('error')
+		return render_template('index.html',ans=ans,error=error)
+	else:
+		return render_template('index.html')
 
 #POST /submit
 @app.route('/submit',methods = ['POST'])
 def submit():
 	if(request.method=='POST'):
 		features=[]
-		link=request.form['msg']
-		if link != '':
-			link=link.strip()
-			features.append(urlfeature.feature_extract(link))
+		sms=request.form['msg']
+		url=''
+		for w in sms.split(' '):
+			if(w.startswith('https:') or w.startswith('http:') or w.startswith('www') ):
+				url=w
 
-		df=pd.DataFrame(features)
-		ans=rf_model.predict(df[train_cols])
-		
-		print(ans)
-		
-		# features.append(ans)
-		# return redirect(url_for('/'))
-		return {'features':features}
+		if url != '':
+			url=str(url)
+			features.append(urlfeature.feature_extract(url))
+
+			df=pd.DataFrame(features)
+			ans=rf_model.predict(df[train_cols])
+			print('URL is: ',url)
+			print('\n ANS  is: ',ans)
+
+			return {'features':features}
+		else:
+			error='Please enter a valid URL'
+			return redirect(url_for('main'))
+
 
 app.run(debug=True)
