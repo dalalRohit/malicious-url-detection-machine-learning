@@ -31,38 +31,54 @@
 				<h5>2-UNSAFE</h5>
 			</caption>
 			<hr/>
-			<div>
-				<div class="alert">
-					{% if(ans) %}
-						{% if(ans==1)%}
-							<h2 class="alert alert-warning" >Website entered is SUSPICIOUS</h2>
-						{% endif%}
-						
-						{% if(ans==0)%}
-							<h2 class="alert alert-success" >Website entered is SAFE</h2>
-						{% endif%}
 
-						{% if(ans==2)%}
-							<h2 class="alert alert-danger" >Website entered is MALICIOUS</h2>
-						{% endif%}
-					{% endif %}
-
-					{% if error%}
-						<h3 class="alert alert-warning">{{error}}</h3>
-					{% endif %}
-				</div>
-				<form method="POST" action="/submit">
-					<div class="form-group">
-						<label for="msg">Enter message to test</label>
-						<textarea placeholder="Enter your message here...." class="form-control" id="msg" name="msg" rows="3"></textarea>
-					</div>
-					<button type="submit" class="btn btn-info">Submit</button>
-				</form>
+			<div class="result">
+				<h3 class="status alert alert-warning alert-dismissible" style="display: none;"></h3>
 			</div>
+
+			<form method="POST" action="/submit" onsubmit="handleForm(event)">
+				<div class="form-group">
+					<label for="msg">Enter message to test</label>
+					<textarea placeholder="Enter your message here...." class="form-control" id="msg" name="msg" rows="3"></textarea>
+				</div>
+				<button type="submit" onclick="handleForm(event)" class="btn btn-info">Submit</button>
+			</form>
 		</div>
 
+		<script src="./../static/js/axios.min.js"></script>
 		<script type="text/javascript" src="./../static/js/jquery-3.4.1.slim.min.js"></script>
 		<script type="text/javascript" src="./../static/js/popper.min.js"></script>
 		<script type="text/javascript" src="./../static/js/bootstrap.min.js"></script>
+
+		<script type="text/javascript">
+
+			function handleForm(e){
+				e.preventDefault();
+
+				let msg=document.querySelector('#msg').value;
+				let statusDiv=document.querySelector('.status');
+				
+				axios.post('/submit',{msg:msg})
+					.then( (res) => {
+						if(res.data.error){
+							alert(res.data.error);
+							return;
+						}
+
+						//show msg in alert
+						let flash=res.data.features[1].flash;
+						statusDiv.style.display='block'
+						statusDiv.innerHTML=flash;
+						
+						alert(res.data.features[1].flash);
+					})
+					.catch( (err) => {
+						if(err){
+							alert(err);
+						}
+						console.log(err);
+					})
+			}
+		</script>
 	</body>
 </html>

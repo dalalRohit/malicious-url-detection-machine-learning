@@ -65,7 +65,9 @@ def main():
 def submit():
 	if(request.method=='POST'):
 		features=[]
-		sms=request.form['msg']
+		data=request.get_json()
+		sms=data['msg']
+		#Check for URL in msg
 		url=''
 		for w in sms.split(' '):
 			if(w.startswith('https:') or w.startswith('http:') or w.startswith('www') ):
@@ -76,14 +78,23 @@ def submit():
 			features.append(urlfeature.feature_extract(url))
 
 			df=pd.DataFrame(features)
-			ans=rf_model.predict(df[train_cols])
-			print('URL is: ',url)
-			print('\n ANS  is: ',ans)
+			ans_np=list(rf_model.predict(df[train_cols]))
+
+			# print 'URL is: ',url
+			# print '\n ANS  is: ',ans[0]
+			ans=int(ans_np[0])
+
+			if(ans==1):
+				features.append({'ans':ans,'flash':'Site entered is SUSPICIOUS','url':url})
+			elif(ans==0):
+				features.append({'ans':ans,'flash':'Site entered is SAFE','url':url})
+			else:
+				features.append({'ans':ans,'flash':'Site entered is MALICIOUS','url':url})
 
 			return {'features':features}
 		else:
 			error='Please enter a valid URL'
-			return redirect(url_for('main'))
+			return {'error':error}
 
 
 app.run(debug=True)
