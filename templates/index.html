@@ -34,6 +34,11 @@
 
 			<div class="result">
 				<h3 class="status alert alert-warning alert-dismissible" style="display: none;"></h3>
+				<main class="main_features">
+					<ul class="features">
+						
+					</ul>
+				</main>
 			</div>
 
 			<form method="POST" action="/submit" onsubmit="handleForm(event)">
@@ -57,6 +62,8 @@
 
 				let msg=document.querySelector('#msg').value;
 				let statusDiv=document.querySelector('.status');
+				let featuresDiv=$('.features');
+
 				
 				axios.post('/submit',{msg:msg})
 					.then( (res) => {
@@ -65,12 +72,24 @@
 							return;
 						}
 
+						console.log(res.data);
 						//show msg in alert
 						let flash=res.data.features[1].flash;
+						let features=res.data.features[0];
 						statusDiv.style.display='block'
 						statusDiv.innerHTML=flash;
 						
 						alert(res.data.features[1].flash);
+
+						
+						Object.keys(features).map( (f) => {
+							featuresDiv.append(
+								`<li>${f} => ${features[f]}</li>`
+							)
+						})
+						
+
+
 					})
 					.catch( (err) => {
 						if(err){
