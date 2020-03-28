@@ -97,4 +97,3 @@ def submit():
 			return {'error':error}
 
 
-app.run(debug=True)
