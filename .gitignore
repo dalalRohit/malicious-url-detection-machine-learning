@@ -5,3 +5,6 @@ venv/
 Feature_extraction.pyc
 main.pyc
 trainer.pyc
+faizann_urldata.csv
+2016_DetectingMaliciousURLs_CISDA.pdf
+faizan_model.ipynb
