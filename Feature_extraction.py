@@ -1,4 +1,4 @@
-import urllib.parse as urlparse
+from urllib.parse import urlparse
 import re
 import urllib.request as urllib2
 import urllib
@@ -7,7 +7,8 @@ import csv
 import pygeoip
 import sys
 
-opener = urllib2.build_opener()
+
+opener = urllib.request.build_opener()
 opener.addheaders = [('User-agent', 'Mozilla/5.0')]
 
 nf=-1
@@ -75,7 +76,7 @@ def Check_IPaddress(tokens_words):
 
     cnt=0;
     for ele in tokens_words:
-        if unicode(ele).isnumeric():
+        if str(ele).isnumeric():
             cnt+=1
         else:
             if cnt>=4 :

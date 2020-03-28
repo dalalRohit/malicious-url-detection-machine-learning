@@ -66,6 +66,7 @@ def submit():
 	if(request.method=='POST'):
 		features=[]
 		data=request.get_json()
+		print(data)
 		sms=data['msg']
 		#Check for URL in msg
 		url=''
@@ -95,5 +96,3 @@ def submit():
 		else:
 			error='Please enter a valid URL'
 			return {'error':error}
-
-
