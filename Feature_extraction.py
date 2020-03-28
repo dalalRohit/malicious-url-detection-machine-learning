@@ -1,6 +1,6 @@
-from urlparse import urlparse
+import urllib.parse as urlparse
 import re
-import urllib2
+import urllib.request as urllib2
 import urllib
 from xml.dom import minidom
 import csv
@@ -37,18 +37,18 @@ def find_ele_with_attribute(dom,ele,attribute):
         if subelement.hasAttribute(attribute):
             return subelement.attributes[attribute].value
     return nf
-        
+
 
 def sitepopularity(host):
 
         xmlpath='http://data.alexa.com/data?cli=10&dat=snbamz&url='+host
-        print xmlpath
+        print(xmlpath)
         try:
             xml= urllib2.urlopen(xmlpath)
             dom =minidom.parse(xml)
             rank_host=find_ele_with_attribute(dom,'REACH','RANK')
             country=find_ele_with_attribute(dom,'REACH','RANK')
-            print 'Country ',country
+            print('Country ',country)
             rank_country=find_ele_with_attribute(dom,'COUNTRY','RANK')
             return [rank_host,rank_country]
 
@@ -85,7 +85,7 @@ def Check_IPaddress(tokens_words):
     if cnt>=4:
         return 1
     return 0
-    
+
 def getASN(host):
     try:
         g = pygeoip.GeoIP('GeoIPASNum.dat')
@@ -98,7 +98,7 @@ def getASN(host):
 def web_content_features(url):
     wfeatures={}
     total_cnt=0
-    try:        
+    try:
         source_code = str(opener.open(url))
         #print source_code[:500]
 
@@ -113,16 +113,16 @@ def web_content_features(url):
         wfeatures['src_underescape_cnt']=source_code.count('underescape(')
         wfeatures['src_exec_cnt']=source_code.count('exec(')
         wfeatures['src_search_cnt']=source_code.count('search(')
-        
+
         for key in wfeatures:
             if(key!='src_html_cnt' and key!='src_hlink_cnt' and key!='src_iframe_cnt'):
                 total_cnt+=wfeatures[key]
         wfeatures['src_total_jfun_cnt']=total_cnt
-    
-    except Exception, e:
-        print "Error"+str(e)+" in downloading page "+url 
+
+    except Exception as e:
+        print("Error"+str(e)+" in downloading page "+url)
         default_val=nf
-        
+
         wfeatures['src_html_cnt']=default_val
         wfeatures['src_hlink_cnt']=default_val
         wfeatures['src_iframe_cnt']=default_val
@@ -132,8 +132,8 @@ def web_content_features(url):
         wfeatures['src_underescape_cnt']=default_val
         wfeatures['src_exec_cnt']=default_val
         wfeatures['src_search_cnt']=default_val
-        wfeatures['src_total_jfun_cnt']=default_val    
-    
+        wfeatures['src_total_jfun_cnt']=default_val
+
     return wfeatures
 
 def safebrowsing(url):
@@ -161,13 +161,13 @@ def safebrowsing(url):
             # print "The queried URL is either phishing, malware or both, see the response body for the specific type."
             return 1
         elif res.code==204:
-            print "The requested URL is legitimate, no response body returned."
+            print("The requested URL is legitimate, no response body returned.")
         elif res.code==400:
-            print "Bad Request The HTTP request was not correctly formed."
+            print( "Bad Request The HTTP request was not correctly formed.")
         elif res.code==401:
-            print "Not Authorized The apikey is not authorized"
+            print( "Not Authorized The apikey is not authorized")
         else:
-            print "Service Unavailable The server cannot handle the request. Besides the normal server failures, it could also indicate that the client has been throttled by sending too many requests"
+            print( "Service Unavailable The server cannot handle the request. Besides the normal server failures, it could also indicate that the client has been throttled by sending too many requests")
     except:
         return -1
 
@@ -175,7 +175,7 @@ def feature_extract(url_input):
 
         Feature={}
         tokens_words=re.split('\W+',url_input)       #Extract bag of words stings delimited by (.,/,?,,=,-,_)
-        print tokens_words,len(tokens_words)
+        print(tokens_words,len(tokens_words))
         print(url_input)
         #token_delimit1=re.split('[./?=-_]',url_input)
         #print token_delimit1,len(token_delimit1)
@@ -201,14 +201,14 @@ def feature_extract(url_input):
 
         Feature['sec_sen_word_cnt'] = Security_sensitive(tokens_words)
         Feature['IPaddress_presence'] = Check_IPaddress(tokens_words)
-        
+
         # print host
         # print getASN(host)
         # Feature['exe_in_url']=exe_in_url(url_input)
         Feature['ASNno']=getASN(host)
         Feature['safebrowsing']=safebrowsing(url_input)
         """wfeatures=web_content_features(url_input)
-        
+
         for key in wfeatures:
             Feature[key]=wfeatures[key]
         """

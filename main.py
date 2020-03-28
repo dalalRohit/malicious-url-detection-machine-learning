@@ -19,7 +19,7 @@ def process_URL_list(file_dest,output_dest):
             url=line.split(',')[0].strip()
             malicious_bool=line.split(',')[1].strip()
             if url!='':
-                print 'working on: '+url           #showoff 
+                print('working on: '+url)           #showoff
                 ret_dict=urlfeature.feature_extract(url)
                 ret_dict['malicious']=malicious_bool
                 feature.append([url,ret_dict]);
@@ -31,7 +31,7 @@ def process_test_list(file_dest,output_dest):
         for line in file:
             url=line.strip()
             if url!='':
-                print 'working on: '+url           #showoff 
+                print('working on: '+url)           #showoff
                 ret_dict=urlfeature.feature_extract(url)
                 feature.append([url,ret_dict])
     resultwriter(feature,output_dest)

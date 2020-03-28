@@ -32,7 +32,7 @@ rf.fit(X,y)
 
 scores=cross_val_score(rf, X,y , cv=30)
 
-print 'Estimated score RandomForestClassifier: %0.5f (+/- %0.5f)' % (scores.mean(), scores.std() / 2)
+print('Estimated score RandomForestClassifier: %0.5f (+/- %0.5f)' % (scores.mean(), scores.std() / 2))
 Pkl_Filename = "my_model.pkl"
 
 #Store model to file
