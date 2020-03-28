@@ -1,0 +1,1 @@
+wev : gunicorn deploy:app
