@@ -68,7 +68,7 @@ def main():
                 features.append(feature)
         print(features) #[ ['https://www.twitter.com',{<its-feature>}] ]
         '''
-        process_test_list("sample.txt",'./dataset/faizan_features.csv')
+        process_test_list("query.txt",'./dataset/faizan_features.csv')
         # tr.train('url_features.csv','query_features.csv')      #testing with urls in query.txt
 
 if __name__ == '__main__':
