@@ -20,7 +20,7 @@ def get_nonstring_cols(data_cols):
 				train_cols.append(col)
 	return [cols_to_keep,train_cols]
 
-df=pd.read_csv('url_features.csv')
+df=pd.read_csv('./dataset/url_features.csv')
 
 cols_to_keep,train_cols=get_nonstring_cols(df.columns)
 X=df[train_cols]

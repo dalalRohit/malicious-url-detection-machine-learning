@@ -8,3 +8,8 @@ trainer.pyc
 faizann_urldata.csv
 2016_DetectingMaliciousURLs_CISDA.pdf
 faizan_model.ipynb
+*.pyc
+tp.py
+1701.07179.pdf
+GeoIP.dat
+flask-model.ipynb

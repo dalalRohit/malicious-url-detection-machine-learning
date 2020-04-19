@@ -6,6 +6,11 @@ from xml.dom import minidom
 import csv
 import pygeoip
 import sys
+import requests
+from pysafebrowsing import SafeBrowsing
+import ipinfo
+import socket
+access_token="1b73a65539d8fc"
 
 
 opener = urllib.request.build_opener()
@@ -18,7 +23,6 @@ def Tokenise(url):
         if url=='':
             return [0,0,0]
         token_word=re.split('\W+',url)
-        #print token_word
         no_ele=sum_len=largest=0
         for ele in token_word:
                 l=len(ele)
@@ -43,13 +47,13 @@ def find_ele_with_attribute(dom,ele,attribute):
 def sitepopularity(host):
 
         xmlpath='http://data.alexa.com/data?cli=10&dat=snbamz&url='+host
-        print(xmlpath)
+        # print(xmlpath)
         try:
             xml= urllib2.urlopen(xmlpath)
             dom =minidom.parse(xml)
             rank_host=find_ele_with_attribute(dom,'REACH','RANK')
             country=find_ele_with_attribute(dom,'REACH','RANK')
-            print('Country ',country)
+            # print('Country ',country)
             rank_country=find_ele_with_attribute(dom,'COUNTRY','RANK')
             return [rank_host,rank_country]
 
@@ -87,21 +91,29 @@ def Check_IPaddress(tokens_words):
         return 1
     return 0
 
+# Implemented from scratch by ME
+#https://www.ipinfo.io
 def getASN(host):
-    try:
-        g = pygeoip.GeoIP('GeoIPASNum.dat')
-        asn=int(g.org_by_name(host).split()[0][2:])
-        return asn
-    except:
-        return  nf
+    print(host)
+    handler = ipinfo.getHandler(access_token)
+    host_ip=''
+    try: 
+        host_ip = socket.gethostbyname(host) 
+        x = requests.get('https://ipinfo.io/' + host_ip + '/json?token=' + access_token)
+        ans=x.json()
+        return ans['asn']['asn'] 
+    except: 
+        print('Cannot get ASN Number for host: ',host)
+        host_ip=''
+        return 0
 
 
 def web_content_features(url):
     wfeatures={}
     total_cnt=0
     try:
-        source_code = str(opener.open(url))
-        #print source_code[:500]
+        source_code = urllib.request.url_open(url)
+        print(requests.url_read)
 
         wfeatures['src_html_cnt']=source_code.count('<html')
         wfeatures['src_hlink_cnt']=source_code.count('<a href=')
@@ -137,51 +149,26 @@ def web_content_features(url):
 
     return wfeatures
 
+
+# Implemented from scratch by ME
+# https://pypi.org/project/pysafebrowsing/
 def safebrowsing(url):
-    api_key = "ABQIAAAA8C6Tfr7tocAe04vXo5uYqRTEYoRzLFR0-nQ3fRl5qJUqcubbrw"
-    name = "URL_check"
-    ver = "1.0"
+    api_key='AIzaSyBSps1oh6U-GgD2RxBxkuhpOTEip3Ow514'
+    s = SafeBrowsing(api_key)
+    r = s.lookup_urls([url])
+    return r[url]['malicious']
 
-    req = {}
-    req["client"] = name
-    req["apikey"] = api_key
-    req["appver"] = ver
-    req["pver"] = "3.0"
-    req["url"] = url #change to check type of url
 
-    try:
-        params = urllib.urlencode(req)
-        req_url = "https://sb-ssl.google.com/safebrowsing/api/lookup?"+params
-        res = urllib2.urlopen(req_url)
-        # print res.code
-        # print res.read()
-        if res.code==204:
-            # print "safe"
-            return 0
-        elif res.code==200:
-            # print "The queried URL is either phishing, malware or both, see the response body for the specific type."
-            return 1
-        elif res.code==204:
-            print("The requested URL is legitimate, no response body returned.")
-        elif res.code==400:
-            print( "Bad Request The HTTP request was not correctly formed.")
-        elif res.code==401:
-            print( "Not Authorized The apikey is not authorized")
-        else:
-            print( "Service Unavailable The server cannot handle the request. Besides the normal server failures, it could also indicate that the client has been throttled by sending too many requests")
-    except:
-        return -1
-
+# Main Method
 def feature_extract(url_input):
 
         Feature={}
         tokens_words=re.split('\W+',url_input)       #Extract bag of words stings delimited by (.,/,?,,=,-,_)
-        print(tokens_words,len(tokens_words))
-        print(url_input)
         #token_delimit1=re.split('[./?=-_]',url_input)
         #print token_delimit1,len(token_delimit1)
 
         obj=urlparse(url_input)
+        print(obj)
         host=obj.netloc
         path=obj.path
 
@@ -207,15 +194,17 @@ def feature_extract(url_input):
         # print getASN(host)
         # Feature['exe_in_url']=exe_in_url(url_input)
         Feature['ASNno']=getASN(host)
-        Feature['safebrowsing']=safebrowsing(url_input)
-        """wfeatures=web_content_features(url_input)
+        Feature['safebrowsing']=not safebrowsing(url_input)
+        '''
+        wfeatures=web_content_features(url_input)
 
         for key in wfeatures:
             Feature[key]=wfeatures[key]
-        """
+        
         #debug
         # for key in Feature:
         #     print key +':'+str(Feature[key])
+        '''
         return Feature
 
 if __name__=="__main__":
