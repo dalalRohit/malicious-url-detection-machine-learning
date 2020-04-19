@@ -153,12 +153,13 @@ def web_content_features(url):
 # Implemented from scratch by ME
 # https://pypi.org/project/pysafebrowsing/
 def safebrowsing(url):
-    api_key='AIzaSyBSps1oh6U-GgD2RxBxkuhpOTEip3Ow514'
+    api_key='AIzaSyC43CVr-QkOM92QYc06hEujobyAhTQHvII'
     s = SafeBrowsing(api_key)
     try:
         r = s.lookup_urls([url])
         return r[url]['malicious']
-    except:
+    except Exception as e:
+        print(e)
         return True
 
 # Main Method
