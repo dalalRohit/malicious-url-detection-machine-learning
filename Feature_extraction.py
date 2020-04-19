@@ -97,12 +97,12 @@ def getASN(host):
     print(host)
     handler = ipinfo.getHandler(access_token)
     host_ip=''
-    try: 
-        host_ip = socket.gethostbyname(host) 
+    try:
+        host_ip = socket.gethostbyname(host)
         x = requests.get('https://ipinfo.io/' + host_ip + '/json?token=' + access_token)
         ans=x.json()
-        return ans['asn']['asn'] 
-    except: 
+        return ans['asn']['asn']
+    except:
         print('Cannot get ASN Number for host: ',host)
         host_ip=''
         return 0
@@ -155,9 +155,11 @@ def web_content_features(url):
 def safebrowsing(url):
     api_key='AIzaSyBSps1oh6U-GgD2RxBxkuhpOTEip3Ow514'
     s = SafeBrowsing(api_key)
-    r = s.lookup_urls([url])
-    return r[url]['malicious']
-
+    try:
+        r = s.lookup_urls([url])
+        return r[url]['malicious']
+    except:
+        return True
 
 # Main Method
 def feature_extract(url_input):
@@ -200,7 +202,7 @@ def feature_extract(url_input):
 
         for key in wfeatures:
             Feature[key]=wfeatures[key]
-        
+
         #debug
         # for key in Feature:
         #     print key +':'+str(Feature[key])
