@@ -7,23 +7,24 @@ og_df=pd.read_csv('./dataset/new_dataset.csv')
 y=og_df['label']
 
 def resultwriter(feature,output_dest):
-    flag=True
-    columns=['']
-    data=[]
-    # [ ['url','features] , []]
-    # for i in range(0,len(feature)):
-    # d=feature[0][1]
-    # d['label']=y[i]
-    # data.append(d)
+    columns=[
+        'URL','rank_host','rank_country','host','path','Length_of_url',
+        'Length_of_host','No_of_dots','avg_token_length','token_count',
+        'largest_token','avg_domain_token_length','domain_token_count',
+        'largest_domain','avg_path_token','path_token_count','largest_path',
+        'sec_sen_word_cnt','IPaddress_presence','ASNno','label'
+    
+        ]
+    start=5001
 
-    for i in feature.keys():
-        columns.append(i)
 
     try:
         with open(output_dest,'a') as csvfile:
             writer = csv.DictWriter(csvfile,fieldnames=columns)
             # writer.writeheader()
+            feature['label']=y[start]
             writer.writerow(feature)
+            start+=1
     except IOError:
         print('IOError')
 
@@ -31,7 +32,7 @@ def resultwriter(feature,output_dest):
 
 
 def process_test_list(file_dest,output_dest):
-    feature=[]
+    # feature=[]
     i=0
     with open(file_dest) as file:
         for line in file:
@@ -39,27 +40,15 @@ def process_test_list(file_dest,output_dest):
             if url!='':
                 i=i+1
                 print('working on: ',i)
-                url='https://www.'+url       #showoff
+                # url='https://www.'+url       #showoff
                 ret_dict=urlfeature.feature_extract(url)
                 # print(ret_dict)
-                feature.append([url,ret_dict])
+                # feature.append([url,ret_dict])
                 resultwriter(ret_dict,output_dest)
 
 
 def main():
-        '''
-        features = []
-        urls_to_test=['https://www.twitter.com','https://www.google.com']
-        for line in urls_to_test:
-            url = line.strip()
-            if url != '':
-                print 'working on: ' + url  # showoff
-                feature = urlfeature.feature_extract(url)
-                features.append(feature)
-        print(features) #[ ['https://www.twitter.com',{<its-feature>}] ]
-        '''
-        process_test_list("query.txt",'./dataset/faizan_features.csv')
-        # tr.train('url_features.csv','query_features.csv')      #testing with urls in query.txt
+    process_test_list("query.txt",'./dataset/faizan_features.csv')
 
 if __name__ == '__main__':
     main()
