@@ -153,7 +153,7 @@ def web_content_features(url):
 # Implemented from scratch by ME
 # https://pypi.org/project/pysafebrowsing/
 def safebrowsing(url):
-    api_key='AIzaSyC43CVr-QkOM92QYc06hEujobyAhTQHvII'
+    api_key='AIzaSyDVDkoDJ05srO3OdyZsV1R3UkGa6DB3Bz0'
     s = SafeBrowsing(api_key)
     try:
         r = s.lookup_urls([url])
@@ -197,7 +197,7 @@ def feature_extract(url_input):
         # print getASN(host)
         # Feature['exe_in_url']=exe_in_url(url_input)
         Feature['ASNno']=getASN(host)
-        Feature['safebrowsing']=not safebrowsing(url_input)
+        # Feature['safebrowsing']=not safebrowsing(url_input)
         '''
         wfeatures=web_content_features(url_input)
 
