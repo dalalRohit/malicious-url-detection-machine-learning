@@ -15,7 +15,7 @@ def resultwriter(feature,output_dest):
         'sec_sen_word_cnt','IPaddress_presence','ASNno','label'
     
         ]
-    start=61940
+    start=10002 # 10002-20002
 
 
     try:
@@ -40,7 +40,7 @@ def process_test_list(file_dest,output_dest):
             if url!='':
                 i=i+1
                 print('working on: ',i)
-                url='https://www.'+url       #showoff
+                # url='https://www.'+url       #showoff
                 ret_dict=urlfeature.feature_extract(url)
                 # print(ret_dict)
                 # feature.append([url,ret_dict])
