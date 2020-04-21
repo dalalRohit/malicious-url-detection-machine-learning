@@ -40,7 +40,7 @@ def process_test_list(file_dest,output_dest):
             if url!='':
                 i=i+1
                 print('working on: ',i)
-                # url='http://www.'+url       #showoff
+                url='http://www.'+url       #showoff
                 ret_dict=urlfeature.feature_extract(url)
                 # print(ret_dict)
                 # feature.append([url,ret_dict])
