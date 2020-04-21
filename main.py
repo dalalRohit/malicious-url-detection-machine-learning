@@ -22,7 +22,7 @@ def resultwriter(feature,output_dest):
         with open(output_dest,'a') as csvfile:
             writer = csv.DictWriter(csvfile,fieldnames=columns)
             # writer.writeheader()
-            feature['label']=1
+            feature['label']=0
             writer.writerow(feature)
             # start+=1
     except IOError:
