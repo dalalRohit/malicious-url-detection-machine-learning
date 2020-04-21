@@ -10,7 +10,7 @@ import requests
 from pysafebrowsing import SafeBrowsing
 import ipinfo
 import socket
-access_token="1b73a65539d8fc"
+access_token="8ede24305bd35d" #ipinfo access token
 
 
 opener = urllib.request.build_opener()

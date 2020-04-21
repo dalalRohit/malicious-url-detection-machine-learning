@@ -3,8 +3,8 @@ import Feature_extraction as urlfeature
 import trainer as tr
 import pandas as pd
 
-og_df=pd.read_csv('./dataset/new_dataset.csv')
-y=og_df['label']
+# og_df=pd.read_csv('./dataset/faizann_urldata.csv')
+# y=og_df['label']
 
 def resultwriter(feature,output_dest):
     columns=[
@@ -15,16 +15,16 @@ def resultwriter(feature,output_dest):
         'sec_sen_word_cnt','IPaddress_presence','ASNno','label'
     
         ]
-    start=66941 # 66941-76941
+    # start=20003 # 20003-35003
 
 
     try:
         with open(output_dest,'a') as csvfile:
             writer = csv.DictWriter(csvfile,fieldnames=columns)
             # writer.writeheader()
-            feature['label']=y[start]
+            feature['label']=1
             writer.writerow(feature)
-            start+=1
+            # start+=1
     except IOError:
         print('IOError')
 
@@ -40,7 +40,7 @@ def process_test_list(file_dest,output_dest):
             if url!='':
                 i=i+1
                 print('working on: ',i)
-                url='https://www.'+url       #showoff
+                # url='http://www.'+url       #showoff
                 ret_dict=urlfeature.feature_extract(url)
                 # print(ret_dict)
                 # feature.append([url,ret_dict])
@@ -48,7 +48,7 @@ def process_test_list(file_dest,output_dest):
 
 
 def main():
-    process_test_list("query.txt",'./dataset/faizan_features.csv')
+    process_test_list("query.txt",'./dataset/new_faizan_features.csv')
 
 if __name__ == '__main__':
     main()
