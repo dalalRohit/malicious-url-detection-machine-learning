@@ -162,6 +162,43 @@ def safebrowsing(url):
         print(e)
         return True
 
+def feature_extract_array(urls):
+    features=[]
+    for url in urls:
+        f=[]
+        obj=urlparse(url)
+        print(obj)
+        host=obj.netloc
+        path=obj.path
+        tokens_words=re.split('\W+',url)
+
+        f.append(int(sitepopularity(url)[0])) #sitePopularity[0]
+        f.append(int(sitepopularity(url)[1])) #sitePopularity[1]
+        
+        f.append(len(url)) #Length of url
+        f.append(len(host)) #Length of host
+        f.append(url.count('.')) #Number of dots
+
+        f.append(Tokenise(url)[0])  #url
+        f.append(Tokenise(url)[1]) #url
+        f.append(Tokenise(url)[2]) #url
+
+        f.append(Tokenise(host)[0])  #host
+        f.append(Tokenise(host)[1]) #host
+        f.append(Tokenise(host)[2]) #host
+
+        f.append(Tokenise(path)[0])  #path
+        f.append(Tokenise(path)[1]) #path
+        f.append(Tokenise(path)[2]) #path
+
+        f.append(Security_sensitive(tokens_words))
+
+        f.append(Check_IPaddress(tokens_words))
+        # f.append(getASN(host))
+
+        features.append(f)
+    return features
+
 # Main Method
 def feature_extract(url_input):
 
@@ -210,7 +247,17 @@ def feature_extract(url_input):
         '''
         return Feature
 
+
+
 if __name__=="__main__":
-    url=sys.argv[1]
-    x=feature_extract(url)
-    print(x)
+    url=str(sys.argv[2])
+    t=sys.argv[1]
+    if(t=='dict'):
+
+        x=feature_extract(url)
+        print(x)
+    elif(t=='array'):
+        x=feature_extract_array([url])
+        print(x)
+    else:
+        print(' sys.argv[2] expects dict/array ;(')

@@ -1,2 +1,0 @@
-safebrowsing,token_count,avg_path_token,largest_path,largest_token,URL,sec_sen_word_cnt,IPaddress_presence,largest_domain,No_of_dots,host,Length_of_url,ASNno,rank_country,rank_host,path_token_count,domain_token_count,path,avg_token_length,avg_domain_token_length,Length_of_host
--1,4,0,0,7,https://www.youtube.com,0,0,7,2,www.youtube.com,23,15169,2,2,0,3,,4.5,4.333333333333333,15
